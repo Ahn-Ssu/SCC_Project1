@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 
 public class CalInterface extends JFrame {
 	JLabel label = new JLabel("0", SwingConstants.RIGHT);
-	
+	Double temp ;
 	
 	public CalInterface() {
 		JFrame frame = new JFrame("main");
@@ -59,16 +59,30 @@ public class CalInterface extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+	
 			String eventText =e.getActionCommand();
 			
-			if(eventText.equals("+/-"))
-				label.setText(String.valueOf(-1*Integer.parseInt(label.getText())));
+			String temp = label.getText();
+			String[] t = temp.split(",");
+			String value = "" ;
+			for(String part:t) {
+				value += part;
+			}
 			
-			if(eventText.equals("%"))
-				label.setText(String.valueOf(0.01*Integer.parseInt(label.getText())));
+			if(eventText.equals("C"))
+				label.setText("0");
+	
+			else if(eventText.equals("+/-"))
+				label.setText((String.valueOf(-1*Double.parseDouble(value))));
+			
+			else if(eventText.equals("%"))
+				label.setText((String.valueOf(0.01*Double.parseDouble(value))));
 
-			if(Integer.parseInt(eventText)>0 && Integer.parseInt(eventText)<10)
-				label.setText(Util.convertOut(label.getText(),eventText));
+			else if(Integer.parseInt(eventText)>=0 && Integer.parseInt(eventText)<10)
+				label.setText(Util.convertFormat((Util.convertOutputNumber(value,eventText))));
+			
+			
+			
 		}
 
 	}
