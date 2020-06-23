@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,8 +16,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class CalInterface extends JFrame {
+	
+	ArrayList<String> buff = new ArrayList<>();
 	JLabel label = new JLabel("0", SwingConstants.RIGHT);
 	Double temp ;
+	boolean add=false;
+	boolean sub=false;
+	boolean mul=false;
+	boolean dim=false;
+	boolean next=false;
 	
 	public CalInterface() {
 		JFrame frame = new JFrame("main");
@@ -57,10 +65,14 @@ public class CalInterface extends JFrame {
 	
 	private class ButtonInput implements ActionListener {
 
+		
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 	
 			String eventText =e.getActionCommand();
+		
+			
 			
 			String temp = label.getText();
 			String[] t = temp.split(",");
@@ -69,24 +81,59 @@ public class CalInterface extends JFrame {
 				value += part;
 			}
 			
+
+			if(eventText.equals("+")){ 
+				buff.add(value);
+				buff.add(eventText);
+			}
+			if(eventText.equals("-")){ 
+	
+			}
+			if(eventText.equals("/")){ 
+
+			}
+			if(eventText.equals("X")){ 
+
+			}
+			
+			
+			
 			if(eventText.equals("C"))
 				label.setText("0");
 	
 			else if(eventText.equals("+/-"))
-				label.setText((String.valueOf(-1*Double.parseDouble(value))));
+				label.setText(Util.convertFormat(String.valueOf(-1*Double.parseDouble(value))));
 			
 			else if(eventText.equals("%"))
-				label.setText((String.valueOf(0.01*Double.parseDouble(value))));
-
-			else if(Integer.parseInt(eventText)>=0 && Integer.parseInt(eventText)<10)
+				label.setText(Util.convertFormat(String.valueOf(0.01*Double.parseDouble(value))));
+			
+			else if(eventText.equals(".")) {
+				if(!value.contains("."))
+				label.setText(label.getText()+".");
+			}
+			
+			
+			else if(Double.parseDouble(eventText)==0) {
+				if(!value.contains("."))
+					label.setText(Util.convertFormat((Util.convertOutputNumber(value,eventText))));
+				else
+					label.setText(label.getText()+"0");
+			}
+			
+			else if(Double.parseDouble(eventText)>0 && Double.parseDouble(eventText)<10)
 				label.setText(Util.convertFormat((Util.convertOutputNumber(value,eventText))));
 			
+
+
+		
 			
 			
-		}
+	
+			
+		}//actionPerform
 
 	}
 
-}
 
+}
 
