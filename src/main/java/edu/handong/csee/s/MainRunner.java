@@ -1,6 +1,5 @@
 package edu.handong.csee.s;
 
-import javax.swing.JFrame;
 
 public class MainRunner {
 
