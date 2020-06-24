@@ -16,13 +16,14 @@ public class Util {
 	}
 	
 	public static String convertFormat(String raw) {
-		String pattern = "#,###.#############";
+		String pattern = "#,###.########";
 		
 		DecimalFormat df = new DecimalFormat(pattern);
 		return df.format(Double.parseDouble(raw));
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void ignore(ArrayList<String> buff) {
 		
 		String op = buff.get(1);
@@ -45,14 +46,14 @@ public class Util {
 			buff.remove(1);
 			buff.remove(0);
 		}
-		else if(op.equals("X")) {
+		else if(op.equals("*")) {
 			result = n1.multiply(n2).doubleValue();
 			buff.set(2, String.valueOf(result));
 			buff.remove(1);
 			buff.remove(0);
 		}
 		else if(op.equals("/")) {
-			result = n1.divide(n2).doubleValue();
+			result = n1.divide(n2, 8, BigDecimal.ROUND_HALF_UP).doubleValue();
 			buff.set(2, String.valueOf(result));
 			buff.remove(1);
 			buff.remove(0);
@@ -64,12 +65,12 @@ public class Util {
 		String op2 = buff.get(3);
 		int count = 2 ;
 		
-		if(op1.equals("X") || op1.equals("/") )
+		if(op1.equals("*") || op1.equals("/") )
 			ignore(buff);
-		else if(op2.equals("+")||op2.equals("-"))
+		else if(op2.equals("+")||op2.equals("-")||op2.equals("="))
 			ignore(buff);
-		else if(op2.equals("X") || op2.equals("/")){
-			if(buff.size()>5) {
+		else if(op2.equals("*") || op2.equals("/")){
+			if(buff.size()>4) {
 				ArrayList<String> subBuff = new ArrayList<String>( buff.subList(2, buff.size()));
 				keep(subBuff);
 				System.out.println(subBuff);
