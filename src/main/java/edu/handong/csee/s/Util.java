@@ -23,7 +23,7 @@ public class Util {
 		
 	}
 
-	public static void igonore(ArrayList<String> buff) {
+	public static void ignore(ArrayList<String> buff) {
 		
 		String op = buff.get(1);
 		double result = 0;
@@ -56,6 +56,33 @@ public class Util {
 			buff.set(2, String.valueOf(result));
 			buff.remove(1);
 			buff.remove(0);
+		}
+	}
+	
+	public static void keep(ArrayList<String> buff) {
+		String op1 = buff.get(1);
+		String op2 = buff.get(3);
+		int count = 2 ;
+		
+		if(op1.equals("X") || op1.equals("/") )
+			ignore(buff);
+		else if(op2.equals("+")||op2.equals("-"))
+			ignore(buff);
+		else if(op2.equals("X") || op2.equals("/")){
+			if(buff.size()>5) {
+				ArrayList<String> subBuff = new ArrayList<String>( buff.subList(2, buff.size()));
+				keep(subBuff);
+				System.out.println(subBuff);
+//				subBuff.remove(1);
+//				subBuff.remove(0);
+				for(String element : subBuff) {
+					buff.set(count, element);
+					count++;
+			}
+			buff.remove(4);
+			buff.remove(3);
+			keep(buff);
+			}
 		}
 	}
 }

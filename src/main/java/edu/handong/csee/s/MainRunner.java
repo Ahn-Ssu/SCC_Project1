@@ -9,7 +9,7 @@ public class MainRunner {
 	}
 
 	private void run() {
-		CalInterface myI = new CalInterface();
+		 new CalInterface();
 	}
 	
 	

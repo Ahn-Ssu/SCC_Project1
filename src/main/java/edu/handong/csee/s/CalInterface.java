@@ -19,14 +19,13 @@ public class CalInterface extends JFrame {
 
 	ArrayList<String> buff = new ArrayList<>();
 	ArrayList<String> log = new ArrayList<>();
-	int count = 0;
-	JLabel fnMode = new JLabel("Mode Ignore : four-point operation", SwingConstants.RIGHT);
-	JLabel label = new JLabel("0", SwingConstants.RIGHT);
-	Double temp;
-	int operator = 0;
 	boolean com = false;
 	boolean fnOn = false;
 
+	JLabel fnMode = new JLabel("Mode Ignore : four-point operation", SwingConstants.RIGHT);
+	JLabel label = new JLabel("0", SwingConstants.RIGHT);
+	
+	
 	public CalInterface() {
 		JFrame frame = new JFrame("main");
 		frame.setLocation(500, 400);
@@ -82,10 +81,12 @@ public class CalInterface extends JFrame {
 				if(fnOn) {
 					fnMode.setText("Mode Ignore : four-point operation");
 					fnOn = !fnOn;
+					reset();
 				}
 				else {
 					fnMode.setText("Mode Keep   : four-point operation");
 					fnOn = !fnOn;
+					reset();
 				}
 				
 			}
@@ -100,7 +101,7 @@ public class CalInterface extends JFrame {
 			 }
 				 else {
 					 buff.add(value);
-					 Util.igonore(buff);
+					 Util.ignore(buff);
 					 label.setText(Util.convertFormat(buff.get(0)));
 					 buff.remove(1);
 				 }
@@ -137,7 +138,15 @@ public class CalInterface extends JFrame {
 						log.add(eventText);
 						if (buff.size() >= 4) {
 							// 사칙연산 무시
-							Util.igonore(buff);
+							if(fnOn){
+								Util.keep(buff);
+								label.setText(Util.convertFormat(buff.get(buff.size()-2)));
+							}
+							else {
+								Util.ignore(buff);
+								label.setText(Util.convertFormat(buff.get(0)));
+							}
+							
 						}
 					}
 
@@ -145,7 +154,7 @@ public class CalInterface extends JFrame {
 				com = true;
 				System.out.println(buff);
 				System.out.println("log : " + log);
-				label.setText(Util.convertFormat(buff.get(0)));
+				
 			} else {
 
 				if (buff.size() > 0) {
@@ -154,6 +163,10 @@ public class CalInterface extends JFrame {
 						value = "0";
 						com = false;
 					}
+				}
+				if(buff.size()%2 !=0) {
+					value = "0";
+					reset();	
 				}
 
 				if (eventText.equals("AC")) {
@@ -201,17 +214,3 @@ public class CalInterface extends JFrame {
 	}
 
 }
-/*
- * if(eventText.equals("+")){
- * 
- * if(operator) { buff.add(count-1,eventText); } else { buff.add(value); count
- * ++; buff.add(eventText); count ++; } if(buff.size()>2) { Util.plane(buff);
- * label.setText(buff.get(0)); }
- * 
- * } if(eventText.equals("-")){ if(operator) { buff.add(count-1,eventText); }
- * else { buff.add(value); count ++; buff.add(eventText); count ++; } }
- * if(eventText.equals("/")){ if(operator) { buff.add(count-1,eventText); } else
- * { buff.add(value); count ++; buff.add(eventText); count ++; } }
- * if(eventText.equals("X")){ if(operator) { buff.add(count-1,eventText); } else
- * { buff.add(value); count ++; buff.add(eventText); count ++; } }
- */
