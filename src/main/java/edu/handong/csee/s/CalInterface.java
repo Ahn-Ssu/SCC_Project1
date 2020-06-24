@@ -85,7 +85,7 @@ public class CalInterface extends JFrame {
 			}
 
 			try {
-				if (eventText.toLowerCase().equals("f") ) {
+				if (eventText.equals("Fn") ) {
 					if (fnOn) {
 						fnMode.setText("Mode Ignore : four-point operation");
 						fnOn = !fnOn;
@@ -99,7 +99,7 @@ public class CalInterface extends JFrame {
 				
 				
 
-				else if (eventText.equals("=") || eventText.equals("\n")) {
+				else if (eventText.equals("=")) {
 					// if (buff.get(buff.size() - 1).equals("+")
 					// || buff.get(buff.size() - 1).equals("-")
 					// || buff.get(buff.size() - 1).equals("/")
@@ -168,7 +168,7 @@ public class CalInterface extends JFrame {
 						}
 					}
 					com = true;
-
+					
 					if(buff.size()>0)
 						button[0].setText("C");
 					
@@ -186,14 +186,16 @@ public class CalInterface extends JFrame {
 						}
 					}
 
-					if (eventText.toLowerCase().equals("c")||eventText.equals("ㅊ")) {
+					if (eventText.equals("C")||eventText.equals("AC")) {
 						if(button[0].getText().equals("C")) {
 							label.setText("0");
 							button[0].setText("AC");
+							System.out.println("hi2");
 						}
 						else if(button[0].getText().equals("AC")) {
+							System.out.println("hi");
 							reset();
-						}
+						}			
 							
 					}
 
@@ -270,7 +272,6 @@ public class CalInterface extends JFrame {
 				value += part;
 			}
 			
-				button[0].setText("C");
 
 			
 try {
@@ -359,11 +360,12 @@ try {
 			}
 		}
 		com = true;
+		if(buff.size()>0)
+			button[0].setText("C");
 		System.out.println("buff : " + buff);
 		System.out.println("log : " + log);
 
-		if(buff.size()>0)
-			button[0].setText("C");
+		
 		
 	} else {
 
@@ -386,8 +388,7 @@ try {
 			else if(button[0].getText().equals("AC")) {
 				System.out.println("hi");
 				reset();
-			}
-				
+			}				
 		}
 
 		else if (eventText.equals("!"))
