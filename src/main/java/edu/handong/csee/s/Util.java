@@ -73,16 +73,16 @@ public class Util {
 			if(buff.size()>4) {
 				ArrayList<String> subBuff = new ArrayList<String>( buff.subList(2, buff.size()));
 				keep(subBuff);
-				System.out.println(subBuff);
-//				subBuff.remove(1);
-//				subBuff.remove(0);
 				for(String element : subBuff) {
 					buff.set(count, element);
 					count++;
 			}
 			buff.remove(4);
 			buff.remove(3);
+			System.out.println(buff);
 			keep(buff);
+
+			System.out.println(buff);
 			}
 		}
 	}

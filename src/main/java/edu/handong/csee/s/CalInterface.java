@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,9 +14,15 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class CalInterface extends JFrame {
@@ -27,12 +34,19 @@ public class CalInterface extends JFrame {
 
 	private JLabel fnMode = new JLabel("Mode Ignore : four-point operation", SwingConstants.RIGHT);
 	private JLabel label = new JLabel("0", SwingConstants.RIGHT);
+	private MyDialog md;
 	
-	private final String[] tag = { "AC", "+/-", "%", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "Fn",
-			"0", ".", "=" };
+	private final String[] tag = {
+			"AC", "+/-", "%", "/",
+			"7", "8", "9", "*",
+			"4", "5", "6", "-", 
+			"1", "2", "3", "+", 
+			"Fn","0", ".", "=" 
+			};
 	private JButton button[] = new JButton[tag.length];
 
 	public CalInterface() {
+		
 		JFrame frame = new JFrame("main");
 		frame.setLocation(500, 400);
 		frame.setPreferredSize(new Dimension(400, 500));
@@ -41,11 +55,22 @@ public class CalInterface extends JFrame {
 		GridLayout layout = new GridLayout(5, 4);
 		JPanel panel = new JPanel();
 		JPanel header = new JPanel(new BorderLayout(2, 1));
-
+		JPanel part = new JPanel(new BorderLayout(1,2));
 		fnMode.setFont(new Font("", Font.ITALIC, 15));
 		label.setFont(new Font("", Font.BOLD, 50));
-
-
+		
+		md = new MyDialog(this, "Info");
+		JButton info = new JButton ("Info");
+		info.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				md.setVisible(true);
+			}
+		});
+		getContentPane().add(info);
+		setSize(40,40);
+		setVisible(true);
+		part.add(info);
+		part.add(fnMode);
 		for (int i = 0; i < tag.length; i++) {
 			button[i] = new JButton(tag[i]);
 			panel.add(button[i]);
@@ -57,7 +82,7 @@ public class CalInterface extends JFrame {
 		}
 		contentPane.add(panel);
 		panel.setLayout(layout);
-		header.add(fnMode, BorderLayout.NORTH);
+		header.add(part, BorderLayout.NORTH);
 		header.add(label, BorderLayout.CENTER);
 //		contentPane.add(label, BorderLayout.NORTH);
 //		contentPane.add(fnMode, BorderLayout.SOUTH);
@@ -69,7 +94,43 @@ public class CalInterface extends JFrame {
 		frame.setVisible(true);
 	}
 
+	private class MyDialog extends JDialog{
+		private JTextArea jt = new JTextArea("<Calculator>\n",13,21);
+		private JButton jb = new JButton("OK");
+		
+		public MyDialog(JFrame f, String t) {
+			super(f,t);
+			setLayout(new FlowLayout());
+			jt.setLineWrap(true);
+			jt.append("\n");
+			jt.append("Two ways to calculate using the Fn key\n");
+			jt.append("Keyboard available\n");
+			jt.append("\n");
+			jt.append("Key : Function\n");
+			jt.append("=, Enter : equal operator\n");
+			jt.append("+ : add operator\n");
+			jt.append("- : sub operator\n");
+			jt.append("* : multiply operator\n");
+			jt.append("/ : divide operator\n");
+			jt.append("! : pos / neg\n");
+			jt.append("% : persent\n");
+			jt.append("C : Clear, All Clear\n");
+			jt.append("F : Fn key, Change mode\n");
+			jt.append("Backspace : Clear\n");
+			
+			add(jt);
+			add(jb);
+			setSize(300,350);
+			
+			jb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+			});
+		}
+	}
 
+	
 	private class ButtonInput implements ActionListener {
 
 		@Override
@@ -135,7 +196,7 @@ public class CalInterface extends JFrame {
 
 						label.setText(Util.convertFormat(buff.get(0)));
 					}
-					System.out.println(" in end= // buff : " + buff);
+				
 				}
 
 				else if (eventText.equals("+") || eventText.equals("-") || eventText.equals("*") || eventText.equals("/")) {
@@ -172,12 +233,9 @@ public class CalInterface extends JFrame {
 					if(buff.size()>0)
 						button[0].setText("C");
 					
-					System.out.println("buff : " + buff);
-					System.out.println("log : " + log);
 				} else {
 
-					System.out.println("middle : " + value);
-
+					
 					if (buff.size() > 0) {
 						label.setText(Util.convertFormat(buff.get(0)));
 						if (com) {
@@ -190,10 +248,8 @@ public class CalInterface extends JFrame {
 						if(button[0].getText().equals("C")) {
 							label.setText("0");
 							button[0].setText("AC");
-							System.out.println("hi2");
 						}
 						else if(button[0].getText().equals("AC")) {
-							System.out.println("hi");
 							reset();
 						}			
 							
@@ -242,9 +298,6 @@ public class CalInterface extends JFrame {
 			}catch(Exception err) {
 				
 			}
-
-			System.out.println("end : " + value);
-			// }
 
 		}// actionPerform
 
@@ -304,7 +357,6 @@ try {
 			buff.add(value);
 			log.add(value);
 		}
-		System.out.println(" in = // buff : " + buff);
 
 		if (buff.size() == 1) {
 			label.setText(Util.convertFormat(buff.get(0)));
@@ -320,14 +372,16 @@ try {
 			if (fnOn) {
 				buff.add(eventText);
 				Util.keep(buff);
-				buff.remove(1);
+
+				System.out.println(buff);
+				Util.ignore(buff);;
 			} else {
 				Util.ignore(buff);
 			}
-
+			System.out.println(buff);
 			label.setText(Util.convertFormat(buff.get(0)));
 		}
-		System.out.println(" in end= // buff : " + buff);
+
 	}
 
 	else if (eventText.equals("+") || eventText.equals("-") || eventText.equals("*") || eventText.equals("/")) {
@@ -362,15 +416,13 @@ try {
 		com = true;
 		if(buff.size()>0)
 			button[0].setText("C");
-		System.out.println("buff : " + buff);
-		System.out.println("log : " + log);
+
 
 		
 		
 	} else {
 
-		System.out.println("middle : " + value);
-
+		
 		if (buff.size() > 0) {
 			label.setText(Util.convertFormat(buff.get(0)));
 			if (com) {
@@ -383,10 +435,8 @@ try {
 			if(button[0].getText().equals("C")) {
 				label.setText("0");
 				button[0].setText("AC");
-				System.out.println("hi2");
 			}
 			else if(button[0].getText().equals("AC")) {
-				System.out.println("hi");
 				reset();
 			}				
 		}
@@ -435,7 +485,6 @@ try {
 }
 			
 
-			System.out.println("end : " + value);
 			// }
 
 		}// actionPerform
