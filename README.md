@@ -5,6 +5,7 @@
 
 계산기 구현, + - * % = 0. 필수기능 
 
+![image](https://user-images.githubusercontent.com/64300241/90038280-32c91980-dd00-11ea-8078-a81e1b54025d.png)
 
 
 ### 40시간 프로젝트 
