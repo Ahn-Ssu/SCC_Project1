@@ -1,4 +1,4 @@
-# SCC_Project1
+# ToyProject_Calculator
 ###### 2020 Summer Coding Camp Project #1 (Prof. KIM HJ)
 21600402 Ahn Su Hyun
 
